@@ -1,7 +1,7 @@
 from fastapi import Request, status, APIRouter, UploadFile, File, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-
+from azure_blob_handler import AzureBlobHandler
 
 templates = Jinja2Templates(directory="src/templates")
 
@@ -24,4 +24,5 @@ async def post_recipt_image(file: UploadFile = File()):
     if file.content_type not in ["application/pdf", "image/png", "image/jpg", "image/jpeg"]:
         raise HTTPException(400, detail="Invalid file type")
     content = await file.read()
+    az_handler = AzureBlobHandler()
     return "OK"

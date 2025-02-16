@@ -3,24 +3,30 @@ import time
 from datetime import datetime, timedelta
 from typing import BinaryIO
 from azure.storage.blob import ContainerClient, BlobServiceClient, generate_blob_sas, AccountSasPermissions
-
-CONNECTION_STRING = os.getenv("BLOB_CONECTION_STRING")
+from azure.identity import DefaultAzureCredential
+import logging
+ACCOUNT_URL  = 'https://projektzdjecia.blob.core.windows.net/zdjecia'
 BLOB_ACC_NAME = os.getenv("BLOB_ACCOUNT_NAME")
-
+logger = logging.getLogger(__name__)
 
 class AzureBlobHandler():
     """
     Class to handle all the blob operations
     """
 
-    def __init__(self, container_name: str = "images", prefix: str = "tests/"):
+    def __init__(self, container_name: str = "zdjecia", prefix: str = "tests/"):
         """
         Initialize the class with the container name
         :param container_name: The name of the container
         """
         self.container_name = container_name
-        self.container = ContainerClient.from_connection_string(
-            CONNECTION_STRING, container_name=container_name)
+        try:
+            default_credential = DefaultAzureCredential()
+            self.container = ContainerClient(account_url=ACCOUNT_URL, container_name=container_name,
+                                             credential=default_credential)
+        except Exception as e:
+            print(e)
+            logger.error("Error while connecting to the blob storage")
         self.prefix = prefix
 
     def list_blobs(self, dir: str = ""):
