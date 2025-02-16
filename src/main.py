@@ -1,8 +1,17 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from src.backend.api import router
+
 # from fastapi.middleware.cors import CORSMiddleware
 
-
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="src/static"), name="static")
+templates = Jinja2Templates(directory="src/templates")
+
+## Register image router
+app.include_router(router)
+
 
 origins = ["*"]
 # app.add_middleware(

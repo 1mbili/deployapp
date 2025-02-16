@@ -1,10 +1,23 @@
-from fastapi import Depends, status, APIRouter, UploadFile, File, HTTPException
+from fastapi import Request, status, APIRouter, UploadFile, File, HTTPException
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+
+
+templates = Jinja2Templates(directory="src/templates")
+
 
 router = APIRouter(
     prefix="/image",
     tags=["image"],
     responses={404: {"description": "Not found"}},
 )
+
+@router.get("/items/{id}", response_class=HTMLResponse)
+async def read_item(request: Request, id: str):
+    return templates.TemplateResponse(
+        request=request, name="item.html", context={"id": id}
+    )
+
 
 @router.post("/upload", status_code=status.HTTP_201_CREATED)
 async def post_recipt_image(file: UploadFile = File()):

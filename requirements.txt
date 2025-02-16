@@ -2,3 +2,5 @@ azure-storage-blob
 python-dotenv
 uvicorn
 fastapi
+jinja2
+python-multipart
