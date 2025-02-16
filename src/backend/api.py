@@ -1,7 +1,7 @@
 from fastapi import Request, status, APIRouter, UploadFile, File, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from azure_blob_handler import AzureBlobHandler
+from src.backend.azure_blob_handler import AzureBlobHandler
 
 templates = Jinja2Templates(directory="src/templates")
 
@@ -16,6 +16,12 @@ router = APIRouter(
 async def read_item(request: Request, id: str):
     return templates.TemplateResponse(
         request=request, name="item.html", context={"id": id}
+    )
+
+@router.get("/upload", response_class=HTMLResponse)
+async def upload_image(request: Request):
+    return templates.TemplateResponse(
+        request=request, name="upload.html"
     )
 
 

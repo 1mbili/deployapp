@@ -6,7 +6,6 @@ from azure.storage.blob import ContainerClient, BlobServiceClient, generate_blob
 from azure.identity import DefaultAzureCredential
 import logging
 ACCOUNT_URL  = 'https://projektzdjecia.blob.core.windows.net/zdjecia'
-BLOB_ACC_NAME = os.getenv("BLOB_ACCOUNT_NAME")
 logger = logging.getLogger(__name__)
 
 class AzureBlobHandler():
@@ -27,6 +26,9 @@ class AzureBlobHandler():
         except Exception as e:
             print(e)
             logger.error("Error while connecting to the blob storage")
+            connection_str = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
+            self.container = ContainerClient.from_connection_string(
+                connection_str, container_name)
         self.prefix = prefix
 
     def list_blobs(self, dir: str = ""):
