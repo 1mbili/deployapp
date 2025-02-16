@@ -35,7 +35,6 @@ jobs:
         uses: azure/container-apps-deploy-action@v2
         with:
           appSourcePath: ${{ github.workspace }}
-          dockerfilePath: _dockerfilePath_
           registryUrl: notyfikator2.azurecr.io
           registryUsername: ${{ secrets.DEPLOYPLIKOW_REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.DEPLOYPLIKOW_REGISTRY_PASSWORD }}
