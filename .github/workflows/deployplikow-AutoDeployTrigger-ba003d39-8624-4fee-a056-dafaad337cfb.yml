@@ -42,7 +42,5 @@ jobs:
           containerAppName: deployplikow
           resourceGroup: Projekt2
           imageToBuild: notyfikator2.azurecr.io/deployplikow:${{ github.sha }}
-          buildArguments: |
-            _buildArgumentsValues_
 
 
