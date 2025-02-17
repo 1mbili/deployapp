@@ -20,9 +20,14 @@ class AzureBlobHandler():
         """
         self.container_name = container_name
         try:
-            default_credential = DefaultAzureCredential()
+            default_credential = DefaultAzureCredential(exclude_developer_cli_credential=True,
+                                                        exclude_cli_credentials=True,
+                                                        exclude_powershell_credentials=True,
+                                                        process_timeout=1)
             self.container = ContainerClient(account_url=ACCOUNT_URL, container_name=container_name,
                                              credential=default_credential)
+            a = self.container.download_blob("test.txt").content_as_bytes() 
+            print(a)
         except Exception as e:
             print(e)
             logger.error("Error while connecting to the blob storage")

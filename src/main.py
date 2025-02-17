@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from src.backend.api import router
+from fastapi.responses import HTMLResponse, RedirectResponse
 
 # from fastapi.middleware.cors import CORSMiddleware
 
@@ -24,4 +25,5 @@ origins = ["*"]
 
 @app.get("/")
 async def hello():
-    return "Hello!"
+    redirect_url = "/image/upload"
+    return RedirectResponse(url=redirect_url)
