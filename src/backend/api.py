@@ -26,9 +26,11 @@ async def upload_image(request: Request):
 
 
 @router.post("/upload", status_code=status.HTTP_201_CREATED)
-async def post_recipt_image(file: UploadFile = File()):
+async def post_recipt_image(file: UploadFile = File(...)):
     if file.content_type not in ["application/pdf", "image/png", "image/jpg", "image/jpeg"]:
         raise HTTPException(400, detail="Invalid file type")
     content = await file.read()
     az_handler = AzureBlobHandler()
+    print("Uploading file")
+    az_handler.upload_blob(file.filename, content)
     return "OK"
