@@ -19,10 +19,10 @@ class AzureBlobHandler():
         :param container_name: The name of the container
         """
         self.container_name = container_name
+        self.prefix = prefix
         if conn_str := os.getenv("AZURE_STORAGE_CONNECTION_STRING"):
             self.container = ContainerClient.from_connection_string(
                 conn_str, container_name)
-            self.prefix = prefix
         else:
             default_credential = DefaultAzureCredential()
             self.container = ContainerClient(account_url=ACCOUNT_URL, container_name=container_name,
