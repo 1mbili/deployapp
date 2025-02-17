@@ -24,10 +24,9 @@ class AzureCosmosDBHandler():
             self.client = CosmosClient.from_connection_string(conn_str)
         else:
             default_credential = DefaultAzureCredential()
-            self.client = CosmosClient(url = 
+            self.client = CosmosClient(url = COSMOSDB_URL,
                                        container_name=container_name,
-                                             
-                                        credential=default_credential)
+                                       credential=default_credential)
         try:
             self.database = self.client.create_database(DATABASE_NAME)
         except exceptions.CosmosResourceExistsError:
