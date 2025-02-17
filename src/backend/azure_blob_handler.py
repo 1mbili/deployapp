@@ -19,22 +19,14 @@ class AzureBlobHandler():
         :param container_name: The name of the container
         """
         self.container_name = container_name
-        try:
-            default_credential = DefaultAzureCredential(exclude_developer_cli_credential=True,
-                                                        exclude_cli_credentials=True,
-                                                        exclude_powershell_credentials=True,
-                                                        process_timeout=1)
+        if conn_str := os.getenv("AZURE_STORAGE_CONNECTION_STRING"):
+            self.container = ContainerClient.from_connection_string(
+                conn_str, container_name)
+            self.prefix = prefix
+        else:
+            default_credential = DefaultAzureCredential()
             self.container = ContainerClient(account_url=ACCOUNT_URL, container_name=container_name,
                                              credential=default_credential)
-            a = self.container.download_blob("test.txt").content_as_bytes() 
-            print(a)
-        except Exception as e:
-            print(e)
-            logger.error("Error while connecting to the blob storage")
-            connection_str = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
-            self.container = ContainerClient.from_connection_string(
-                connection_str, container_name)
-        self.prefix = prefix
 
     def list_blobs(self, dir: str = ""):
         """
