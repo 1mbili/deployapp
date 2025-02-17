@@ -31,7 +31,7 @@ async def post_recipt_image(request: Request, file: UploadFile = File(...)):
         raise HTTPException(400, detail="Invalid file type")
     content = await file.read()
     container_prefix = f"prod/{request.headers['x-ms-client-principal-name']}"
-    az_handler = AzureBlobHandler(container_prefix)
+    az_handler = AzureBlobHandler(prefix=container_prefix)
     print("Uploading file")
     az_handler.upload_blob(file.filename, content)
     return "OK"
