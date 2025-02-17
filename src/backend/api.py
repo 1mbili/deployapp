@@ -20,6 +20,7 @@ async def read_item(request: Request, id: str):
 
 @router.get("/upload", response_class=HTMLResponse)
 async def upload_image(request: Request):
+    print(request.headers)
     return templates.TemplateResponse(
         request=request, name="upload.html"
     )
