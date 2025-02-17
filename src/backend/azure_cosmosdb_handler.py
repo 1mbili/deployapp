@@ -6,6 +6,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 DATABASE_NAME = 'zdjecia'
+COSMOSDB_URL = "https://deployplikow.redstone-6bf9eab7.westus2.azurecontainerapps.io"
 
 class AzureCosmosDBHandler():
     """
@@ -23,8 +24,10 @@ class AzureCosmosDBHandler():
             self.client = CosmosClient.from_connection_string(conn_str)
         else:
             default_credential = DefaultAzureCredential()
-            self.client = CosmosClient(container_name=container_name,
-                                             credential=default_credential)
+            self.client = CosmosClient(url = 
+                                       container_name=container_name,
+                                             
+                                        credential=default_credential)
         try:
             self.database = self.client.create_database(DATABASE_NAME)
         except exceptions.CosmosResourceExistsError:
