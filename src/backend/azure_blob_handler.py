@@ -3,7 +3,7 @@ import time
 from datetime import datetime, timedelta
 from typing import BinaryIO
 from azure.storage.blob import ContainerClient, BlobServiceClient, generate_blob_sas, AccountSasPermissions
-from azure.identity import DefaultAzureCredential
+from azure.identity import DefaultAzureCredential, ManagedIdentityCredential
 import logging
 ACCOUNT_URL  = 'https://projektzdjecia.blob.core.windows.net/zdjecia'
 logger = logging.getLogger(__name__)
@@ -24,9 +24,13 @@ class AzureBlobHandler():
             self.container = ContainerClient.from_connection_string(
                 conn_str, container_name)
         else:
-            default_credential = DefaultAzureCredential()
+            managed_identity_client_id = "718e15b2-d4cf-450b-96a8-710e5dae39fc"
+            credential = ManagedIdentityCredential(client_id=managed_identity_client_id)
+            token = credential.get_token("https://storage.azure.com/.default")
+
+            #default_credential = DefaultAzureCredential()
             self.container = ContainerClient(account_url=ACCOUNT_URL, container_name=container_name,
-                                             credential=default_credential)
+                                             credential=token)
 
     def list_blobs(self, dir: str = ""):
         """
