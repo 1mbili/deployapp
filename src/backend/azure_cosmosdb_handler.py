@@ -25,7 +25,7 @@ class AzureCosmosDBHandler():
             self.client = CosmosClient.from_connection_string(conn_str)
         else:
             default_credential = ManagedIdentityCredential(client_id="978f1e1d-946a-4fe9-83c7-c9fdd44ee70e")
-            self.container = CosmosClient(account_url=COSMOSDB_URL, container_name=container_name,
+            self.container = CosmosClient(url=COSMOSDB_URL, container_name=container_name,
                                              credential=default_credential)
         try:
             self.database = self.client.create_database(DATABASE_NAME)
