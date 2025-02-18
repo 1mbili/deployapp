@@ -5,7 +5,7 @@ from typing import BinaryIO
 from azure.storage.blob import ContainerClient, BlobServiceClient, generate_blob_sas, AccountSasPermissions
 from azure.identity import DefaultAzureCredential, ManagedIdentityCredential
 import logging
-ACCOUNT_URL  = 'https://projektzdjecia.blob.core.windows.net/'
+ACCOUNT_URL  = 'https://projektzdjecia.blob.core.windows.net'
 logger = logging.getLogger(__name__)
 
 class AzureBlobHandler():
