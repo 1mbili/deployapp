@@ -3,7 +3,7 @@ import time
 from datetime import datetime, timedelta
 from typing import BinaryIO
 from azure.storage.blob import ContainerClient, BlobServiceClient, generate_blob_sas, AccountSasPermissions
-from azure.identity import DefaultAzureCredential, ManagedIdentityCredential
+from azure.identity import ManagedIdentityCredential
 import logging
 ACCOUNT_URL  = 'https://projektzdjecia.blob.core.windows.net'
 logger = logging.getLogger(__name__)

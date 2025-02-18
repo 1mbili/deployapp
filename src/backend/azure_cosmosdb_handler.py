@@ -1,5 +1,5 @@
 import os
-from azure.identity import DefaultAzureCredential
+from azure.identity import ManagedIdentityCredential
 from azure.cosmos import CosmosClient, exceptions, PartitionKey
 
 import logging
@@ -24,10 +24,9 @@ class AzureCosmosDBHandler():
         if conn_str := os.getenv("COSMOS_DB_KEY"):
             self.client = CosmosClient.from_connection_string(conn_str)
         else:
-            default_credential = DefaultAzureCredential()
-            self.client = CosmosClient(url=COSMOSDB_URL,
-                                       container_name=container_name,
-                                       credential=default_credential)
+            default_credential = ManagedIdentityCredential(client_id="978f1e1d-946a-4fe9-83c7-c9fdd44ee70e")
+            self.container = CosmosClient(account_url=COSMOSDB_URL, container_name=container_name,
+                                             credential=default_credential)
         try:
             self.database = self.client.create_database(DATABASE_NAME)
         except exceptions.CosmosResourceExistsError:
