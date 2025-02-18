@@ -16,11 +16,13 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
+
 @router.get("/items/{id}", response_class=HTMLResponse)
 async def read_item(request: Request, id: str):
     return templates.TemplateResponse(
         request=request, name="item.html", context={"id": id}
     )
+
 
 @router.get("/upload", response_class=HTMLResponse)
 async def upload_image(request: Request):
@@ -30,7 +32,7 @@ async def upload_image(request: Request):
 
 
 @router.post("/upload", status_code=status.HTTP_201_CREATED)
-async def post_recipt_image(request: Request, 
+async def post_recipt_image(request: Request,
                             file: UploadFile = File(...),
                             tag_key: Optional[List[str]] = Form(None),
                             tag_value: Optional[List[str]] = Form(None)):
@@ -40,18 +42,20 @@ async def post_recipt_image(request: Request,
     if "x-ms-client-principal-name" in request.headers:
         container_prefix = f"prod/{request.headers['x-ms-client-principal-name']}"
         user_id = request.headers['x-ms-client-principal-id']
-    else: 
+    else:
         container_prefix = "dev"
         user_id = "dev"
     az_handler = AzureBlobHandler(prefix=container_prefix)
     print("Uploading file")
     az_handler.upload_blob(file.filename, content)
-    print("File Uploaded succesfully") 
+    print("File Uploaded succesfully")
     cosmos_handler = AzureCosmosDBHandler()
-    tags = {"id": uuid.uuid4().hex, "userId": user_id, "fileName": file.filename}
+    tags = {"id": uuid.uuid4().hex, "userId": user_id,
+            "fileName": file.filename}
     print(tag_key, tag_value)
     if tag_key and tag_value:
-        user_tags = {key: value for key, value in zip(tag_key, tag_value) if key and value}
+        user_tags = {key: value for key, value in zip(
+            tag_key, tag_value) if key and value}
         tags.update(user_tags)
     cosmos_handler.upload_document(tags)
     return "OK"

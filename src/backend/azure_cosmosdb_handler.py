@@ -8,6 +8,7 @@ logger = logging.getLogger(__name__)
 DATABASE_NAME = 'zdjecia'
 COSMOSDB_URL = "https://deployplikow.redstone-6bf9eab7.westus2.azurecontainerapps.io"
 
+
 class AzureCosmosDBHandler():
     """
     Class to handle all the blob operations
@@ -24,7 +25,7 @@ class AzureCosmosDBHandler():
             self.client = CosmosClient.from_connection_string(conn_str)
         else:
             default_credential = DefaultAzureCredential()
-            self.client = CosmosClient(url = COSMOSDB_URL,
+            self.client = CosmosClient(url=COSMOSDB_URL,
                                        container_name=container_name,
                                        credential=default_credential)
         try:
@@ -33,12 +34,14 @@ class AzureCosmosDBHandler():
             self.database = self.client.get_database_client(DATABASE_NAME)
 
         try:
-            self.container = self.database.create_container(id=self.container_name, partition_key=PartitionKey(path="/userId"))
+            self.container = self.database.create_container(
+                id=self.container_name, partition_key=PartitionKey(path="/userId"))
         except exceptions.CosmosResourceExistsError:
-            self.container = self.database.get_container_client(self.container_name)
-        
+            self.container = self.database.get_container_client(
+                self.container_name)
+
         print("Container created")
-        
+
     def upload_document(self, document: dict):
         """
         Upload a document to the container
