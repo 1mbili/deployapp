@@ -24,13 +24,9 @@ class AzureBlobHandler():
             self.container = ContainerClient.from_connection_string(
                 conn_str, container_name)
         else:
-            managed_identity_client_id = "0921be3d-347e-454a-ace9-6d5786046f86"
-            credential = ManagedIdentityCredential(client_id=managed_identity_client_id)
-            token = credential.get_token("https://storage.azure.com/.default")
-
-            #default_credential = DefaultAzureCredential()
+            default_credential = DefaultAzureCredential()
             self.container = ContainerClient(account_url=ACCOUNT_URL, container_name=container_name,
-                                             credential=token)
+                                             credential=default_credential)
 
     def list_blobs(self, dir: str = ""):
         """
