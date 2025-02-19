@@ -21,7 +21,7 @@ class AzureCosmosDBHandler():
         """
         self.container_name = container_name
         self.prefix = prefix
-        if conn_str := os.getenv("COSMOS_DB_KEY"):
+        if conn_str := os.getenv("cosmos-db-key"):
             self.client = CosmosClient.from_connection_string(conn_str)
         else:
             default_credential = ManagedIdentityCredential(client_id="978f1e1d-946a-4fe9-83c7-c9fdd44ee70e")
